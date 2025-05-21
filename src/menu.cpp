@@ -1,4 +1,5 @@
 #include "vex.h"
+#include "menu.h"
 
 namespace cchs
 {
