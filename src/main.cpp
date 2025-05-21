@@ -7,36 +7,49 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
+//This includes programs that help run the and code this program.
 #include "vex.h"
 #include "menu.h"
 
+//These are the namespaces to program with: vex is the main one, and cchs is for the menu system
 using namespace vex;
 using namespace cchs;
 
+//This helps define the physical terms, and these come with the premade vex outline
 brain Brain;
 competition Competition;
 controller Controller1 = controller(primary);
 menu Menu(Competition, Controller1);
 
-motor leftMotorA = motor(PORT14, ratio6_1, true);
-motor leftMotorB = motor(PORT5, ratio6_1, true);
-motor leftMotorC = motor(PORT15, ratio18_1, true);
-motor rightMotorA = motor(PORT13, ratio6_1, true);
-motor rightMotorB = motor(PORT21, ratio6_1, true);
-motor rightMotorC = motor(PORT7, ratio18_1, true);
+//These are all of the motors we use, what ports they are in, and what gearbox is being used
+motor leftMotorA = motor(PORT11, ratio6_1, true);
+motor leftMotorB = motor(PORT13, ratio6_1, true);
+motor leftMotorC = motor(PORT15, ratio6_1, true);
+motor rightMotorA = motor(PORT12, ratio6_1, true);
+motor rightMotorB = motor(PORT14, ratio6_1, false);
+motor rightMotorC = motor(PORT16, ratio6_1, true);
 motor_group LeftDrive = motor_group(leftMotorA, leftMotorB, leftMotorC);
 motor_group RightDrive = motor_group(rightMotorA, rightMotorB, rightMotorC);
 motor HighIntake = motor(PORT20, ratio18_1, true);
-motor LowIntake = motor(PORT18, ratio6_1, true);
+motor LowIntake = motor(PORT10, ratio6_1, true);
+
+//These are what we use for pneumatics and sensors.
+//Trapdoor helps us to put the blocks on either the middle or higher level
 digital_out TrapDoor = digital_out(Brain.ThreeWirePort.H);
+//This helps us take out blocks from the starting posts in the corners
 digital_out Wings = digital_out(Brain.ThreeWirePort.G);
+//This helps with autonomous, as it registers turning to be more realistic
 inertial IMU = inertial(PORT17);
+//This is a color sensor, to help detect different colored blocks
 optical Eyes = optical(PORT3);
 
+//These are booleans to help with programming
 bool toggleTrapDoor = false;
+bool toggleWings = false;
 bool stopBlock = false;
 int blockDelay = 0;
 
+//This is an action for programming, so one button opens and closes the Trapdoor
 void TrapDoorToggle (){
   if (Menu.isComplete) {
     toggleTrapDoor = !toggleTrapDoor;
@@ -44,16 +57,15 @@ void TrapDoorToggle (){
   }
 }
 
-void wingOpen() {
-  Wings.set(true);
-}
-
-void wingClose() {
+//Brings the wings up and down
+void wingsToggle (){
   if (Menu.isComplete) {
-    Wings.set(false);
+    toggleWings = !toggleWings;
+    Wings.set(toggleWings);
   }
 }
 
+//These next ones register the events of releasing buttons, and when released, an action ends
 void onevent_Controller1ButtonL1_released_0() {
   HighIntake.stop(hold);
   LowIntake.stop();
@@ -84,7 +96,7 @@ void onevent_Controller1ButtonDown_released_0() {
   LowIntake.stop();
 }
 
-
+//This is the wait, and shows how long something needs to happen before
 void waitUntilOrTimeout(double t, double timeout = 30, bool greater = false) {
   // @TODO need to pass a condition 
   double start = Brain.Timer.value();
@@ -281,6 +293,7 @@ void usercontrol(void) {
     // calculate the drivetrain motor velocities from the controller joystick axies
     // left = Axis3 + Axis1
     // right = Axis3 - Axis1
+    //NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning
     int speedLeft = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.2;
     int speedRight = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.2;
     // check if the value is inside of the deadband range
