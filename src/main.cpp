@@ -28,14 +28,11 @@ motor leftMotorC = motor(PORT12, ratio6_1, true);
 motor rightMotorA = motor(PORT15, ratio6_1, false);
 motor rightMotorB = motor(PORT13, ratio6_1, false);
 motor rightMotorC = motor(PORT11, ratio6_1, false);
-
-motor_group LeftDrive = motor_group(
-  leftMotorA, leftMotorB, leftMotorC
-);
-motor_group RightDrive = motor_group(
-  rightMotorA, rightMotorB, rightMotorC
-);
-motor HighIntake = motor(PORT20, ratio18_1, true);
+//These are the groups, to help with programming the move and turn functions
+motor_group LeftDrive = motor_group(leftMotorA, leftMotorB, leftMotorC);
+motor_group RightDrive = motor_group(rightMotorA, rightMotorB, rightMotorC);
+//These motors are for our intake, and tell what way they spin
+motor HighIntake = motor(PORT20, ratio18_1, false);
 motor LowIntake = motor(PORT10, ratio6_1, false);
 
 //These are what we use for pneumatics and sensors.
@@ -70,38 +67,38 @@ void wingsToggle (){
   }
 }
 
-//These next ones register the events of releasing buttons, and when released, an action ends
+//These next voids ones register the events of releasing buttons, and when released, an action ends
 void onevent_Controller1ButtonL1_released_0() {
-  HighIntake.stop(hold);
+  HighIntake.stop();
   LowIntake.stop();
 }
 
 void onevent_Controller1ButtonL2_released_0() {
-  HighIntake.stop(hold);
+  HighIntake.stop();
   LowIntake.stop();
 }
 
 void onevent_Controller1ButtonR1_released_0() {
-  HighIntake.stop(hold);
+  HighIntake.stop();
   LowIntake.stop();
 }
 
 void onevent_Controller1ButtonR2_released_0() {
-  HighIntake.stop(hold);
+  HighIntake.stop();
   LowIntake.stop();
 }
 
 void onevent_Controller1ButtonRight_released_0() {
-  HighIntake.stop(hold);
+  HighIntake.stop();
   LowIntake.stop();
 }
 
 void onevent_Controller1ButtonDown_released_0() {
-  HighIntake.stop(hold);
+  HighIntake.stop();
   LowIntake.stop();
 }
 
-//This is the wait, and shows how long something needs to happen before
+//This is the wait, and shows how long something needs to happen before another action
 void waitUntilOrTimeout(double t, double timeout = 30, bool greater = false) {
   // @TODO need to pass a condition 
   double start = Brain.Timer.value();
@@ -120,6 +117,7 @@ void waitUntilOrTimeout(double t, double timeout = 30, bool greater = false) {
 
 }
 
+//This is the function for move, so in the code I can tell it to move a certain amount, and it does
 void move(int distance, int speed = 40, int timeout = 5) {
   LeftDrive.setVelocity(speed, percent);
   RightDrive.setVelocity(speed, percent);
@@ -149,6 +147,7 @@ void move(int distance, int speed = 40, int timeout = 5) {
   printf("end move\n");
 }
 
+//This is the function for turn, so that I type in turn then the amount of degrees I need
 void turn(int angle, int speed = 20, double timeout = 3) {
   IMU.resetRotation();
   double start = Brain.Timer.value();
@@ -169,6 +168,7 @@ void turn(int angle, int speed = 20, double timeout = 3) {
   printf("end turn\n");
 }
 
+//Lines 172-193 define what a block is for the color sensor
 enum block {
   NONE,
   RED,
@@ -192,6 +192,7 @@ void blockDetect() {
   }
 }
 
+//This is for the menu, so the menu loads before the autonomous
 void auton() {
   Menu.currentAuton();
 }
@@ -217,7 +218,7 @@ void autonomous5(void) {
 
 }
 
-
+//This is for the menu, so we can register which autonomous to choose before a match begins
 void pre_auton(void) {
   waitUntil(IMU.isCalibrating() == true);
   Menu.registerAuton("BlueLeft", autonomous1);
@@ -227,6 +228,7 @@ void pre_auton(void) {
   Menu.registerAuton("Skills", autonomous5);
 }
 
+//This is the controls that define which button presses do which functions
 void usercontrol(void) {
   while (!Menu.isComplete) {
     wait(20, msec);
@@ -236,7 +238,6 @@ void usercontrol(void) {
     return;
   }
   while (1) {
-    // Drivetrain.setDriveVelocity(100, percent);
     if (Controller1.ButtonL2.pressing()) {
       HighIntake.spin(forward);
       LowIntake.spin(forward);
@@ -252,6 +253,7 @@ void usercontrol(void) {
         printf("slow.\n");
       }
     }
+
     if (Controller1.ButtonRight.pressing()) {
       HighIntake.setVelocity(19, percent); //8
       HighIntake.spin(reverse);
@@ -260,16 +262,11 @@ void usercontrol(void) {
       if ((Block == block::RED && (Menu.currentAuton == &autonomous3 || Menu.currentAuton == &autonomous4 || Menu.currentAuton == &autonomous5))
       || (Block == block::BLUE && (Menu.currentAuton == &autonomous1 || Menu.currentAuton == &autonomous2))) {
         stopBlock = true;
-        // wait(715, msec);
-        // Scorer.stop();
-        // Scorer.spinFor(forward, 1.5, turns, false);
-        // Scorer.spinFor(forward, 0.9, turns, false);
-        // wait(250, msec);
       } else {
         if (stopBlock) {
           blockDelay++;
           if (blockDelay > 1) {//4
-            HighIntake.stop(hold);
+            HighIntake.stop();
           }
         } else {
           HighIntake.setVelocity(19, percent);
@@ -279,12 +276,7 @@ void usercontrol(void) {
         }
       }
     }
-    if (Controller1.ButtonR1.pressing()) {
 
-      stopBlock = false;
-    } else if (Controller1.ButtonR2.pressing()) {
-
-    }
     if (Block == block::RED) {
       Brain.Screen.clearScreen(color::red);
     } else if (Block == block::BLUE) {
@@ -320,7 +312,7 @@ void setBlock() {
     }
     wait(290, msec);
     HighIntake.setVelocity(35, percent);
-    HighIntake.stop(hold);
+    HighIntake.stop();
   }
 }
 
@@ -329,12 +321,12 @@ int main() {
   Competition.drivercontrol(usercontrol);
   pre_auton();
 
+//These register either the single button presses for pneumatics, or releasing buttons for the intake
   Controller1.ButtonL1.released(onevent_Controller1ButtonL1_released_0);
   Controller1.ButtonL2.released(onevent_Controller1ButtonL2_released_0);
   Controller1.ButtonR1.released(onevent_Controller1ButtonR1_released_0);
   Controller1.ButtonR2.released(onevent_Controller1ButtonR2_released_0);
   Controller1.ButtonB.pressed(TrapDoorToggle);
-  Controller1.ButtonY.pressed(TrapDoorToggle);
   Controller1.ButtonRight.released(onevent_Controller1ButtonRight_released_0);
   Controller1.ButtonDown.released(onevent_Controller1ButtonDown_released_0);
   // Controller1.ButtonA.pressed(setBlock);
