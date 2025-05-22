@@ -22,16 +22,21 @@ controller Controller1 = controller(primary);
 menu Menu(Competition, Controller1);
 
 //These are all of the motors we use, what ports they are in, and what gearbox is being used
-motor leftMotorA = motor(PORT11, ratio6_1, true);
-motor leftMotorB = motor(PORT13, ratio6_1, true);
-motor leftMotorC = motor(PORT15, ratio6_1, true);
-motor rightMotorA = motor(PORT12, ratio6_1, true);
-motor rightMotorB = motor(PORT14, ratio6_1, false);
-motor rightMotorC = motor(PORT16, ratio6_1, true);
-motor_group LeftDrive = motor_group(leftMotorA, leftMotorB, leftMotorC);
-motor_group RightDrive = motor_group(rightMotorA, rightMotorB, rightMotorC);
+motor leftMotorA = motor(PORT16, ratio6_1, true);
+motor leftMotorB = motor(PORT14, ratio6_1, true);
+motor leftMotorC = motor(PORT12, ratio6_1, true);
+motor rightMotorA = motor(PORT15, ratio6_1, false);
+motor rightMotorB = motor(PORT13, ratio6_1, false);
+motor rightMotorC = motor(PORT11, ratio6_1, false);
+
+motor_group LeftDrive = motor_group(
+  leftMotorA, leftMotorB, leftMotorC
+);
+motor_group RightDrive = motor_group(
+  rightMotorA, rightMotorB, rightMotorC
+);
 motor HighIntake = motor(PORT20, ratio18_1, true);
-motor LowIntake = motor(PORT10, ratio6_1, true);
+motor LowIntake = motor(PORT10, ratio6_1, false);
 
 //These are what we use for pneumatics and sensors.
 //Trapdoor helps us to put the blocks on either the middle or higher level
@@ -39,7 +44,7 @@ digital_out TrapDoor = digital_out(Brain.ThreeWirePort.H);
 //This helps us take out blocks from the starting posts in the corners
 digital_out Wings = digital_out(Brain.ThreeWirePort.G);
 //This helps with autonomous, as it registers turning to be more realistic
-inertial IMU = inertial(PORT17);
+inertial IMU = inertial(PORT21);
 //This is a color sensor, to help detect different colored blocks
 optical Eyes = optical(PORT3);
 
@@ -192,7 +197,8 @@ void auton() {
 }
 
 void autonomous1(void) {
-  
+ move(10);
+ turn(90);
 }
 
 void autonomous2(void) {
@@ -211,9 +217,6 @@ void autonomous5(void) {
 
 }
 
-void autonomous6 (void) {
-
-}
 
 void pre_auton(void) {
   waitUntil(IMU.isCalibrating() == true);
@@ -222,7 +225,6 @@ void pre_auton(void) {
   Menu.registerAuton("RedLeft", autonomous3);
   Menu.registerAuton("RedRight", autonomous4);
   Menu.registerAuton("Skills", autonomous5);
-  Menu.registerAuton("BackupSkills", autonomous6);
 }
 
 void usercontrol(void) {
@@ -293,9 +295,9 @@ void usercontrol(void) {
     // calculate the drivetrain motor velocities from the controller joystick axies
     // left = Axis3 + Axis1
     // right = Axis3 - Axis1
-    //NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning
-    int speedLeft = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.2;
-    int speedRight = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.2;
+    //NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning, number is percent of turn speed
+    int speedLeft = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.5;
+    int speedRight = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.5;
     // check if the value is inside of the deadband range
     if (abs(speedLeft) < 3) speedLeft = 0;
     if (abs(speedRight) < 3) speedRight = 0;
