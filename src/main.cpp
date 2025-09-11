@@ -22,22 +22,24 @@ controller Controller1 = controller(primary);
 menu Menu(Competition, Controller1);
 
 //These are all of the motors we use, what ports they are in, and what gearbox is being used
-motor leftMotorA = motor(PORT16, ratio6_1, true);
-motor leftMotorB = motor(PORT14, ratio6_1, true);
-motor leftMotorC = motor(PORT12, ratio6_1, true);
-motor rightMotorA = motor(PORT15, ratio6_1, false);
-motor rightMotorB = motor(PORT13, ratio6_1, false);
-motor rightMotorC = motor(PORT11, ratio6_1, false);
+motor leftMotorA = motor(PORT7, ratio6_1, true);
+motor leftMotorB = motor(PORT4, ratio6_1, true);
+motor leftMotorC = motor(PORT6, ratio6_1, true);
+motor rightMotorA = motor(PORT1, ratio6_1, false);
+motor rightMotorB = motor(PORT3, ratio6_1, false);
+motor rightMotorC = motor(PORT5, ratio6_1, false);
+
 //These are the groups, to help with programming the move and turn functions
 motor_group LeftDrive = motor_group(leftMotorA, leftMotorB, leftMotorC);
 motor_group RightDrive = motor_group(rightMotorA, rightMotorB, rightMotorC);
 //These motors are for our intake, and tell what way they spin
-motor HighIntake = motor(PORT2, ratio6_1, true);
-motor LowIntake = motor(PORT1, ratio6_1, false);
+motor IntakeA = motor(PORT8, ratio6_1, true);
+motor IntakeB = motor(PORT9, ratio18_1, false);
+motor IntakeC = motor(PORT10, ratio18_1, false);
 
 //These are what we use for pneumatics and sensors.
-//Trapdoor helps us to put the blocks on either the middle or higher level
-digital_out TrapDoor = digital_out(Brain.ThreeWirePort.H);
+//Stopper helps us to put the blocks on either the middle or higher level
+digital_out Stopper = digital_out(Brain.ThreeWirePort.H);
 //This helps us take out blocks from the starting posts in the corners
 digital_out Scraper = digital_out(Brain.ThreeWirePort.A);
 //This helps with autonomous, as it registers turning to be more realistic
@@ -47,16 +49,16 @@ inertial IMU2 = inertial(PORT20);
 optical Eyes = optical(PORT3);
 
 //These are booleans to help with programming
-bool toggleTrapDoor = false;
+bool toggleStopper = false;
 bool toggleScraper = false;
 bool stopBlock = false;
 int blockDelay = 0;
 
-//This is an action for programming, so one button opens and closes the Trapdoor
-void TrapDoorToggle (){
+//This is an action for programming, so one button opens and closes the Stopper
+void StopperToggle (){
   if (Menu.isComplete) {
-    toggleTrapDoor = !toggleTrapDoor;
-    TrapDoor.set(toggleTrapDoor);
+    toggleStopper = !toggleStopper;
+    Stopper.set(toggleStopper);
   }
 }
 
@@ -70,33 +72,39 @@ void scraperToggle (){
 
 //These next voids ones register the events of releasing buttons, and when released, an action ends
 void onevent_Controller1ButtonL1_released_0() {
-  HighIntake.stop();
-  LowIntake.stop();
+  IntakeA.stop();
+  IntakeB.stop();
+  IntakeC.stop();
 }
 
 void onevent_Controller1ButtonL2_released_0() {
-  HighIntake.stop();
-  LowIntake.stop();
+  IntakeA.stop();
+  IntakeB.stop();
+  IntakeC.stop();
 }
 
 void onevent_Controller1ButtonR1_released_0() {
-  HighIntake.stop();
-  LowIntake.stop();
+  IntakeA.stop();
+  IntakeB.stop();
+  IntakeC.stop();
 }
 
 void onevent_Controller1ButtonR2_released_0() {
-  HighIntake.stop();
-  LowIntake.stop();
+  IntakeA.stop();
+  IntakeB.stop();
+  IntakeC.stop();
 }
 
 void onevent_Controller1ButtonRight_released_0() {
-  HighIntake.stop();
-  LowIntake.stop();
+  IntakeA.stop();
+  IntakeB.stop();
+  IntakeC.stop();
 }
 
 void onevent_Controller1ButtonDown_released_0() {
-  HighIntake.stop();
-  LowIntake.stop();
+  IntakeA.stop();
+  IntakeB.stop();
+  IntakeC.stop();
 }
 
 //This is the wait, and shows how long something needs to happen before another action
@@ -268,24 +276,28 @@ void usercontrol(void) {
   }
   while (1) {
     if (Controller1.ButtonL2.pressing()) {
-      HighIntake.spin(forward);
-      LowIntake.spin(forward);
+      IntakeA.spin(reverse);
+      IntakeB.spin(forward);
+      IntakeC.spin(reverse);
     } else if (Controller1.ButtonL1.pressing()) {
-      HighIntake.spin(reverse);
-      LowIntake.spin(reverse);
+      IntakeA.spin(forward);
+      IntakeB.spin(reverse);
+      IntakeC.spin(forward);
       // if ((Block == block::BLUE && (Menu.currentAuton == &autonomous3 || Menu.currentAuton == &autonomous4))
       //   || (Block == block::RED && (Menu.currentAuton == &autonomous1 || Menu.currentAuton == &autonomous2))) {
       //   wait(240, msec);
-      //   HighIntake.stop();
+      //   IntakeA.stop();
       //   printf("fast!\n");
       //   wait(500, msec);
       //   printf("slow.\n");
       // }
     }
     if (Controller1.ButtonR1.pressing()) {
-      HighIntake.spin(forward);
+      IntakeA.spin(forward);
+      IntakeB.spin(forward);
+      IntakeC.spin(forward);
     } else if (Controller1.ButtonR2.pressing()) {
-      HighIntake.spin(reverse);
+
     }
     // if (Controller1.ButtonDown.pressing()) {
 
@@ -317,8 +329,8 @@ void usercontrol(void) {
     // }
 
     // calculate the drivetrain motor velocities from the controller joystick axies
-    // left = Axis3 + Axis1
-    // right = Axis3 - Axis1
+    // left = Axis3 + Axis1;
+    // right = Axis3 - Axis1;
     //NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning, number is percent of turn speed
     int speedLeft = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.5;
     int speedRight = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.5;
@@ -358,11 +370,12 @@ int main() {
   Controller1.ButtonL2.released(onevent_Controller1ButtonL2_released_0);
   Controller1.ButtonR1.released(onevent_Controller1ButtonR1_released_0);
   Controller1.ButtonR2.released(onevent_Controller1ButtonR2_released_0);
-  Controller1.ButtonB.pressed(TrapDoorToggle);
+  Controller1.ButtonR2.pressed(StopperToggle);
   Controller1.ButtonDown.pressed(scraperToggle);
   // Controller1.ButtonA.pressed(setBlock);
-  HighIntake.setVelocity(100, percent);
-  LowIntake.setVelocity(100, percent);
+  IntakeA.setVelocity(100, percent);
+  IntakeB.setVelocity(100, percent);
+  IntakeC.setVelocity(100, percent);
   Eyes.setLight(ledState::on);
   Eyes.integrationTime(50);
   Eyes.objectDetectThreshold(150);
