@@ -63,7 +63,7 @@ void StopperToggle (){
 }
 
 //Brings the Scraper up and down
-void scraperToggle (){
+void ScraperToggle (){
   if (Menu.isComplete) {
     toggleScraper = !toggleScraper;
     Scraper.set(toggleScraper);
@@ -369,9 +369,8 @@ int main() {
   Controller1.ButtonL1.released(onevent_Controller1ButtonL1_released_0);
   Controller1.ButtonL2.released(onevent_Controller1ButtonL2_released_0);
   Controller1.ButtonR1.released(onevent_Controller1ButtonR1_released_0);
-  Controller1.ButtonR2.released(onevent_Controller1ButtonR2_released_0);
   Controller1.ButtonR2.pressed(StopperToggle);
-  Controller1.ButtonDown.pressed(scraperToggle);
+  Controller1.ButtonDown.pressed(ScraperToggle);
   // Controller1.ButtonA.pressed(setBlock);
   IntakeA.setVelocity(100, percent);
   IntakeB.setVelocity(100, percent);
