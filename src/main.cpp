@@ -282,7 +282,7 @@ void usercontrol(void) {
     } else if (Controller1.ButtonL1.pressing()) {
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
-      IntakeC.spin(forward);
+      IntakeC.spin(reverse);
       // if ((Block == block::BLUE && (Menu.currentAuton == &autonomous3 || Menu.currentAuton == &autonomous4))
       //   || (Block == block::RED && (Menu.currentAuton == &autonomous1 || Menu.currentAuton == &autonomous2))) {
       //   wait(240, msec);
@@ -294,8 +294,8 @@ void usercontrol(void) {
     }
     if (Controller1.ButtonR1.pressing()) {
       IntakeA.spin(forward);
-      IntakeB.spin(forward);
-      IntakeC.spin(forward);
+      IntakeB.spin(reverse);
+      IntakeC.spin(reverse);
     } else if (Controller1.ButtonR2.pressing()) {
 
     }
