@@ -258,10 +258,10 @@ void autonomous5(void) {
 void pre_auton(void) {
   waitUntil(IMU1.isCalibrating() == true);
   waitUntil(IMU2.isCalibrating() == true);
-  Menu.registerAuton("Blue Left", autonomous1);
-  Menu.registerAuton("Blue Right", autonomous2);
-  Menu.registerAuton("Red Left", autonomous3);
-  Menu.registerAuton("Red Right", autonomous4);
+  Menu.registerAuton("Blue Side, Left Corner", autonomous1);
+  Menu.registerAuton("Blue Side, Right Corner", autonomous2);
+  Menu.registerAuton("Red Side, Left Corner", autonomous3);
+  Menu.registerAuton("Red Side, Right Corner", autonomous4);
   Menu.registerAuton("Skills", autonomous5);
 }
 
@@ -332,8 +332,8 @@ void usercontrol(void) {
     // left = Axis3 + Axis1;
     // right = Axis3 - Axis1;
     //NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning, number is percent of turn speed
-    int speedLeft = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.5;
-    int speedRight = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.5;
+    int speedLeft = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.4;
+    int speedRight = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.4;
     // check if the value is inside of the deadband range
     if (abs(speedLeft) < 3) speedLeft = 0;
     if (abs(speedRight) < 3) speedRight = 0;
@@ -369,7 +369,8 @@ int main() {
   Controller1.ButtonL1.released(onevent_Controller1ButtonL1_released_0);
   Controller1.ButtonL2.released(onevent_Controller1ButtonL2_released_0);
   Controller1.ButtonR1.released(onevent_Controller1ButtonR1_released_0);
-  Controller1.ButtonR2.pressed(StopperToggle);
+  Controller1.ButtonR2.released(onevent_Controller1ButtonR2_released_0);
+  Controller1.ButtonB.pressed(StopperToggle);
   Controller1.ButtonDown.pressed(ScraperToggle);
   // Controller1.ButtonA.pressed(setBlock);
 
