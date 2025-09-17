@@ -35,7 +35,7 @@ motor_group RightDrive = motor_group(rightMotorA, rightMotorB, rightMotorC);
 //These motors are for our intake, and tell what way they spin
 motor IntakeA = motor(PORT8, ratio6_1, true);
 motor IntakeB = motor(PORT9, ratio18_1, false);
-motor IntakeC = motor(PORT10, ratio18_1, false);
+motor IntakeC = motor(PORT10, ratio18_1, true);
 
 //These are what we use for pneumatics and sensors.
 //Stopper helps us to put the blocks on either the middle or higher level
@@ -278,7 +278,7 @@ void usercontrol(void) {
     if (Controller1.ButtonL2.pressing()) {
       IntakeA.spin(reverse);
       IntakeB.spin(forward);
-      IntakeC.spin(reverse);
+      IntakeC.spin(forward);
     } else if (Controller1.ButtonL1.pressing()) {
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
@@ -295,7 +295,7 @@ void usercontrol(void) {
     if (Controller1.ButtonR1.pressing()) {
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
-      IntakeC.spin(reverse);
+      IntakeC.spin(forward);
     } else if (Controller1.ButtonR2.pressing()) {
 
     }
@@ -372,9 +372,17 @@ int main() {
   Controller1.ButtonR2.pressed(StopperToggle);
   Controller1.ButtonDown.pressed(ScraperToggle);
   // Controller1.ButtonA.pressed(setBlock);
+
+  //These set the speeds of the motors, and the settings of the color sensor
   IntakeA.setVelocity(100, percent);
   IntakeB.setVelocity(100, percent);
   IntakeC.setVelocity(100, percent);
+  leftMotorA.setVelocity(95, percent);
+  leftMotorB.setVelocity(95, percent);
+  leftMotorC.setVelocity(95, percent);
+  rightMotorA.setVelocity(95, percent);
+  rightMotorB.setVelocity(95, percent);
+  rightMotorC.setVelocity(95, percent);
   Eyes.setLight(ledState::on);
   Eyes.integrationTime(50);
   Eyes.objectDetectThreshold(150);
