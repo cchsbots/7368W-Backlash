@@ -18,7 +18,6 @@
 			"name": "Win32",
 			"includePath": [
 				"${vex_sdkIncludes}",
-				"C:/Users/Levi/AppData/Roaming/Code/User/globalStorage/vexrobotics.vexcode/sdk/cpp/V5/V5_20240802_15_00_00/vexv5/include",
 				"${workspaceFolder}/include"
 			],
 			"compilerPath": "${vex_compilerPath}",
