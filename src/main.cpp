@@ -27,7 +27,7 @@ motor leftMotorB = motor(PORT4, ratio6_1, true);
 motor leftMotorC = motor(PORT6, ratio6_1, true);
 motor rightMotorA = motor(PORT1, ratio6_1, false);
 motor rightMotorB = motor(PORT3, ratio6_1, false);
-motor rightMotorC = motor(PORT5, ratio6_1, false);
+motor rightMotorC = motor(PORT5, ratio6_1, true);
 
 //These are the groups, to help with programming the move and turn functions
 motor_group LeftDrive = motor_group(leftMotorA, leftMotorB, leftMotorC);
