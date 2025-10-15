@@ -43,8 +43,7 @@ digital_out Stopper = digital_out(Brain.ThreeWirePort.H);
 //This helps us take out blocks from the starting posts in the corners
 digital_out Scraper = digital_out(Brain.ThreeWirePort.A);
 //This helps with autonomous, as it registers turning to be more realistic
-inertial IMU1 = inertial(PORT21);
-inertial IMU2 = inertial(PORT20);
+inertial IMU1 = inertial(PORT19);
 //This is a color sensor, to help detect different colored blocks
 optical Eyes = optical(PORT3);
 
@@ -177,25 +176,6 @@ void turn(int angle, int speed = 20, double timeout = 3) {
   RightDrive.stop(brake);
   printf("end turn\n");
 } 
-{
-  IMU2.resetRotation();
-  double start = Brain.Timer.value();
-  printf("start turn\n");
-  while (fabs(IMU2.rotation(degrees)) < fabs(angle) && Brain.Timer.value() - start < timeout) {
-    if (angle < 0) {
-      // turn counterclockwise
-      LeftDrive.spin(reverse, speed, percent);
-      RightDrive.spin(forward, speed, percent);
-    } else {
-      // turn clockwise
-      LeftDrive.spin(forward, speed, percent);
-      RightDrive.spin(reverse, speed, percent);
-    }
-  }
-  LeftDrive.stop(brake);
-  RightDrive.stop(brake);
-  printf("end turn\n");
-}
 }
 
 //Lines 172-193 define what a block is for the color sensor
@@ -229,8 +209,28 @@ void auton() {
 
 //This is our autonomous for the corner that is for the left corner of the blue alliance.
 void autonomous1(void) {
- move(10);
- turn(90);
+IntakeA.spin(forward);
+IntakeB.spin(reverse);
+IntakeC.spin(forward);
+move(30, 15);
+ScraperToggle();
+wait(.25, sec);
+move(11, 20);
+turn(-88.5);
+move(-34, 15); //33->34
+StopperToggle();
+wait(1.5, sec);
+IntakeC.setVelocity(100, percent);
+IntakeC.spin(reverse);
+move(82); //81->82
+StopperToggle();
+turn(-25);
+wait(.75, sec);
+move(15.5);
+wait(1, sec);
+move(-45);
+StopperToggle();
+//IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
 }
 
 //This is our autonomous for the corner that is for the right corner of the blue alliance.
@@ -240,7 +240,27 @@ void autonomous2(void) {
 
 //This is our autonomous for the corner that is for the left corner of the red alliance. It is the same as the 2nd autonomous
 void autonomous3(void) {
-
+IntakeA.spin(forward);
+IntakeB.spin(reverse);
+IntakeC.spin(forward);
+move(30, 15);
+ScraperToggle();
+wait(.25, sec);
+move(11, 20);
+turn(-88.5);
+move(-34, 15); //33->34
+StopperToggle();
+wait(1.5, sec);
+IntakeC.setVelocity(100, percent);
+IntakeC.spin(reverse);
+move(82); //81->82
+StopperToggle();
+turn(-25);
+wait(.75, sec);
+move(15.5);
+wait(1, sec);
+move(-45);
+StopperToggle();
 }
 
 //This is our autonomous for the corner that is for the right corner of the red alliance. It is the same as the 1st autonomous
@@ -257,7 +277,6 @@ void autonomous5(void) {
 //It also shows on the screen which autonomous we want to select in easier terms to understand
 void pre_auton(void) {
   waitUntil(IMU1.isCalibrating() == true);
-  waitUntil(IMU2.isCalibrating() == true);
   Menu.registerAuton("Blue Side, Left Corner", autonomous1);
   Menu.registerAuton("Blue Side, Right Corner", autonomous2);
   Menu.registerAuton("Red Side, Left Corner", autonomous3);
@@ -276,10 +295,14 @@ void usercontrol(void) {
   }
   while (1) {
     if (Controller1.ButtonL2.pressing()) {
+      IntakeC.setVelocity(100, percent);
+
       IntakeA.spin(reverse);
       IntakeB.spin(forward);
       IntakeC.spin(forward);
     } else if (Controller1.ButtonL1.pressing()) {
+      IntakeC.setVelocity(100, percent);
+
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
       IntakeC.spin(reverse);
@@ -293,10 +316,17 @@ void usercontrol(void) {
       // }
     }
     if (Controller1.ButtonR1.pressing()) {
+      IntakeC.setVelocity(80, percent);
+
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
       IntakeC.spin(forward);
     } else if (Controller1.ButtonR2.pressing()) {
+      IntakeC.setVelocity(100, percent);
+
+      IntakeA.spin(forward);
+      IntakeB.spin(reverse);
+      IntakeC.spin(reverse);
 
     }
     // if (Controller1.ButtonDown.pressing()) {
@@ -378,12 +408,12 @@ int main() {
   IntakeA.setVelocity(100, percent);
   IntakeB.setVelocity(100, percent);
   IntakeC.setVelocity(100, percent);
-  leftMotorA.setVelocity(95, percent);
-  leftMotorB.setVelocity(95, percent);
-  leftMotorC.setVelocity(95, percent);
-  rightMotorA.setVelocity(95, percent);
-  rightMotorB.setVelocity(95, percent);
-  rightMotorC.setVelocity(95, percent);
+  leftMotorA.setVelocity(98, percent);
+  leftMotorB.setVelocity(98, percent);
+  leftMotorC.setVelocity(98, percent);
+  rightMotorA.setVelocity(100, percent);
+  rightMotorB.setVelocity(100, percent);
+  rightMotorC.setVelocity(100, percent);
   Eyes.setLight(ledState::on);
   Eyes.integrationTime(50);
   Eyes.objectDetectThreshold(150);
