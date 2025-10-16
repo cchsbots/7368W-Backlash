@@ -207,68 +207,88 @@ void auton() {
   Menu.currentAuton();
 }
 
-//This is our autonomous for the corner that is for the left corner of the blue alliance.
 void autonomous1(void) {
+// This is the code for our autonomous in the left corner of the blue alliance
+// It already has the matchload, and spins to score in the middle goal
 IntakeA.spin(forward);
 IntakeB.spin(reverse);
-IntakeC.spin(forward);
+IntakeC.spin(forward, 70, percent);
+// It moves toward the three blocks, and intakes them
 move(30, 15);
+// The scraper comes down to get the third block in the intake
 ScraperToggle();
 wait(.25, sec);
 move(11, 20);
+// It turns to face the middle goal
 turn(-88.5);
-move(-34, 15); //33->34
+// It moves backward to the middle goal, and scores the blocks
+move(-34, 15); 
+// The Stopper releases so the blocks can fall into the goal
 StopperToggle();
 wait(1.5, sec);
-IntakeC.setVelocity(100, percent);
-IntakeC.spin(reverse);
-move(82); //81->82
+// The intake now spins in the direction to score in the long goal
+IntakeC.spin(reverse, 100, percent);
+// It moves to the area between the matchloading part and the long goal
+move(82);
+// The Stopper comes back so the blocks do not fall out
 StopperToggle();
+// It turns to face the matchloading part
 turn(-25);
 wait(.75, sec);
+// It moves to the matchloading part, and takes out three more blocks
 move(15.5);
 wait(1, sec);
+// It moves backwards to the long goal
 move(-45);
+// The Stopper releases so the blocks can fall into the goal
 StopperToggle();
 //IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
 }
 
-//This is our autonomous for the corner that is for the right corner of the blue alliance.
 void autonomous2(void) {
 
 }
 
-//This is our autonomous for the corner that is for the left corner of the red alliance. It is the same as the 2nd autonomous
 void autonomous3(void) {
+// This is the code for our autonomous in the right corner of the red alliance
+// It already has the matchload, and spins to score in the middle goal
 IntakeA.spin(forward);
 IntakeB.spin(reverse);
-IntakeC.spin(forward);
+IntakeC.spin(forward, 70, percent);
+// It moves toward the three blocks, and intakes them
 move(30, 15);
+// The scraper comes down to get the third block in the intake
 ScraperToggle();
 wait(.25, sec);
 move(11, 20);
+// It turns to face the middle goal
 turn(-88.5);
-move(-34, 15); //33->34
+// It moves backward to the middle goal, and scores the blocks
+move(-34, 15);
+// The Stopper releases so the blocks can fall into the goal
 StopperToggle();
 wait(1.5, sec);
-IntakeC.setVelocity(100, percent);
-IntakeC.spin(reverse);
-move(82); //81->82
+// The intake now spins in the direction to score in the long goal
+IntakeC.spin(reverse, 100, percent);
+// It moves to the area between the matchloading part and the long goal
+move(82);
+// The Stopper comes back so the blocks do not fall out
 StopperToggle();
+// It turns to face the matchloading part
 turn(-25);
 wait(.75, sec);
+// It moves to the matchloading part, and takes out three more blocks
 move(15.5);
 wait(1, sec);
+// It moves backwards to the long goal
 move(-45);
 StopperToggle();
 }
 
-//This is our autonomous for the corner that is for the right corner of the red alliance. It is the same as the 1st autonomous
 void autonomous4(void) {
 
 }
 
-//This is our autonomous for skills.
 void autonomous5(void) {
 
 }
