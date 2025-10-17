@@ -1,4 +1,4 @@
-//This is the menu file, which creates a menu on the controller screen to select which autonomous to run. From here, you can register different autonomous functions, and then select which one to run on the controller screen before a match begins. If you are just practicing, you can also select to run the driver control period from here.
+//This is the menu.cpp file, which creates a menu on the controller screen to select which autonomous to run. From here, you can register different autonomous functions, and then select which one to run on the controller screen before a match begins. If you are just practicing, you can also select to run the driver control period from here.
 #include "vex.h"
 #include "menu.h"
 

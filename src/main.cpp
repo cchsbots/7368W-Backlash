@@ -7,7 +7,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-//This is the main file, where all of the main programming is done (ie: programming for autonomous and driver control, defining motors and sensors, etc.)
+//This is the main (main.cpp) file, where all of the main programming is done (ie: programming for autonomous and driver control, defining motors and sensors, etc.)
 
 //This includes programs that help run and code this program.
 #include "vex.h"
