@@ -396,7 +396,50 @@ StopperToggle();
 }
 
 void autonomous5(void) {
-
+// This is the code for our skills autonomous
+// It already has the matchload, and spins to score in the middle top goal
+IntakeA.spin(forward);
+IntakeB.spin(reverse);
+IntakeC.spin(forward, 70, percent);
+// It moves toward the three blocks, and intakes them
+move(30, 15);
+wait(.25, sec);
+move(6, 10);
+// The scraper comes down to get the third block in the intake
+ScraperToggle();
+move(5, 10);
+// It turns to face the middle top goal
+turn(-88.5);
+// It moves backward to the middle top goal, and scores the blocks
+move(-34, 15); 
+// The Stopper releases so the blocks can fall into the goal
+StopperToggle();
+wait(1.5, sec);
+// The intake now spins in the direction to score in the long goal
+move(83);
+// The Stopper comes back so the blocks do not fall out
+IntakeC.spin(reverse, 100, percent);
+// It moves to the area between the matchloading part and the long goal
+StopperToggle();
+// It turns to face the matchloading part
+turn(-25);
+wait(.75, sec);
+// It moves backwards to the long goal
+move(-31);
+// It moves to the matchloading part, and takes out three more blocks
+move(46);
+wait(3, sec);
+// It moves backwards to the long goal
+move(-47);
+// The Stopper releases so the blocks can fall into the goal
+StopperToggle();
+wait(5, sec);
+ScraperToggle();
+move(30);
+turn(-25);
+move(20);
+turn(-20);
+move(50);
 }
 
 //This is for the menu, so we can register which autonomous to choose before a match begins
