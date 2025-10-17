@@ -44,6 +44,8 @@ motor IntakeC = motor(PORT10, ratio18_1, true);
 digital_out Stopper = digital_out(Brain.ThreeWirePort.H);
 //This helps us take out blocks from the starting posts in the corners
 digital_out Scraper = digital_out(Brain.ThreeWirePort.A);
+// This helps us to descore the long goals that have opponent blocks on them
+digital_out Descore = digital_out(Brain.ThreeWirePort.G);
 //This helps with autonomous, as it registers turning to be more realistic
 inertial IMU1 = inertial(PORT19);
 //This is a color sensor, to help detect different colored blocks
@@ -52,6 +54,7 @@ optical Eyes = optical(PORT3);
 //These are booleans to help with programming
 bool toggleStopper = false;
 bool toggleScraper = false;
+bool toggleDescore = false;
 bool stopBlock = false;
 int blockDelay = 0;
 
@@ -68,6 +71,14 @@ void ScraperToggle (){
   if (Menu.isComplete) {
     toggleScraper = !toggleScraper;
     Scraper.set(toggleScraper);
+  }
+}
+
+//Brings the Scraper up and down
+void DescoreToggle (){
+  if (Menu.isComplete) {
+    toggleDescore = !toggleDescore;
+    Descore.set(toggleDescore);
   }
 }
 
@@ -431,11 +442,6 @@ void usercontrol(void) {
       IntakeB.spin(reverse);
       IntakeC.spin(forward, 70, percent);
     } else if (Controller1.ButtonR2.pressing()) {
-      IntakeC.setVelocity(100, percent);
-
-      IntakeA.spin(forward);
-      IntakeB.spin(reverse);
-      IntakeC.spin(reverse);
 
     }
     // if (Controller1.ButtonDown.pressing()) {
@@ -510,7 +516,9 @@ int main() {
   Controller1.ButtonR1.released(onevent_Controller1ButtonR1_released_0);
   Controller1.ButtonR2.released(onevent_Controller1ButtonR2_released_0);
   Controller1.ButtonB.pressed(StopperToggle);
-  Controller1.ButtonDown.pressed(ScraperToggle);
+  Controller1.ButtonR2.pressed(ScraperToggle);
+  // Controller1.ButtonDown.pressed
+
   // Controller1.ButtonA.pressed(setBlock);
 
   //These set the speeds of the motors, and the settings of the color sensor
