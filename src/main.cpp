@@ -7,7 +7,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-//This includes programs that help run the and code this program.
+//This is the main file, where all of the main programming is done (ie: programming for autonomous and driver control, defining motors and sensors, etc.)
+
+//This includes programs that help run and code this program.
 #include "vex.h"
 #include "menu.h"
 
@@ -21,7 +23,7 @@ competition Competition;
 controller Controller1 = controller(primary);
 menu Menu(Competition, Controller1);
 
-//These are all of the motors we use, what ports they are in, and what gearbox is being used
+//These are all of the motors for the drivetrain, what ports they are in, and what gearbox is being used
 motor leftMotorA = motor(PORT7, ratio6_1, true);
 motor leftMotorB = motor(PORT4, ratio6_1, true);
 motor leftMotorC = motor(PORT6, ratio6_1, true);

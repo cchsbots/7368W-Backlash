@@ -1,3 +1,4 @@
+//This is the file that defines the namespace cchs, which helps create a menu on the controller screen.
 #include <vector>
 
 namespace cchs
