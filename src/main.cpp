@@ -7,23 +7,23 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-//This is the main (main.cpp) file, where all of the main programming is done (ie: programming for autonomous and driver control, defining motors and sensors, etc.)
+// This is the main (main.cpp) file, where all of the main programming is done (ie: programming for autonomous and driver control, defining motors and sensors, etc.)
 
-//This includes programs that help run and code this program.
+// This includes programs that help run and code this program.
 #include "vex.h"
 #include "menu.h"
 
-//These are the namespaces to program with: vex is the main one, and cchs is for the menu system
+// These are the namespaces to program with: vex is the main one, and cchs is for the menu system
 using namespace vex;
 using namespace cchs;
 
-//This helps define the physical terms, and these come with the premade vex outline
+// This helps define the physical terms, and these come with the premade vex outline
 brain Brain;
 competition Competition;
 controller Controller1 = controller(primary);
 menu Menu(Competition, Controller1);
 
-//These are all of the motors for the drivetrain, what ports they are in, and what gearbox is being used
+// These are all of the motors for the drivetrain, what ports they are in, and what gearbox is being used
 motor leftMotorA = motor(PORT7, ratio6_1, true);
 motor leftMotorB = motor(PORT4, ratio6_1, true);
 motor leftMotorC = motor(PORT6, ratio6_1, true);
@@ -31,168 +31,194 @@ motor rightMotorA = motor(PORT1, ratio6_1, false);
 motor rightMotorB = motor(PORT3, ratio6_1, false);
 motor rightMotorC = motor(PORT5, ratio6_1, false);
 
-//These are the groups, to help with programming the move and turn functions
+// These are the groups, to help with programming the move and turn functions
 motor_group LeftDrive = motor_group(leftMotorA, leftMotorB, leftMotorC);
 motor_group RightDrive = motor_group(rightMotorA, rightMotorB, rightMotorC);
-//These motors are for our intake, and tell what way they spin
+// These motors are for our intake, and tell what way they spin
 motor IntakeA = motor(PORT8, ratio6_1, true);
 motor IntakeB = motor(PORT9, ratio18_1, false);
 motor IntakeC = motor(PORT10, ratio18_1, true);
 
-//These are what we use for pneumatics and sensors.
-//Stopper helps us to either hold th blocks in the intake, or release them
+// These are what we use for pneumatics and sensors.
+// Stopper helps us to either hold th blocks in the intake, or release them
 digital_out Stopper = digital_out(Brain.ThreeWirePort.H);
-//This helps us take out blocks from the starting posts in the corners
+// This helps us take out blocks from the starting posts in the corners
 digital_out Scraper = digital_out(Brain.ThreeWirePort.A);
 // This helps us to descore the long goals that have opponent blocks on them
 digital_out Descore = digital_out(Brain.ThreeWirePort.G);
-//This helps with autonomous, as it registers turning to be more realistic
+// This helps with autonomous, as it registers turning to be more realistic
 inertial IMU1 = inertial(PORT19);
-//This is a color sensor, to help detect different colored blocks
+// This is a color sensor, to help detect different colored blocks
 optical Eyes = optical(PORT3);
 
-//These are booleans to help with programming
+// These are booleans to help with programming
 bool toggleStopper = false;
 bool toggleScraper = false;
 bool toggleDescore = false;
 bool stopBlock = false;
 int blockDelay = 0;
 
-//This is an action for programming, so one button opens and closes the Stopper
-void StopperToggle (){
-  if (Menu.isComplete) {
+// This is an action for programming, so one button opens and closes the Stopper
+void StopperToggle()
+{
+  if (Menu.isComplete)
+  {
     toggleStopper = !toggleStopper;
     Stopper.set(toggleStopper);
   }
 }
 
-//Brings the Scraper up and down
-void ScraperToggle (){
-  if (Menu.isComplete) {
+// Brings the Scraper up and down
+void ScraperToggle()
+{
+  if (Menu.isComplete)
+  {
     toggleScraper = !toggleScraper;
     Scraper.set(toggleScraper);
   }
 }
 
-//Brings the Scraper up and down
-void DescoreToggle (){
-  if (Menu.isComplete) {
+// Brings the Scraper up and down
+void DescoreToggle()
+{
+  if (Menu.isComplete)
+  {
     toggleDescore = !toggleDescore;
     Descore.set(toggleDescore);
   }
 }
 
-//These next voids ones register the events of releasing buttons, and when released, an action ends
-void onevent_Controller1ButtonL1_released_0() {
+// These next voids ones register the events of releasing buttons, and when released, an action ends
+void onevent_Controller1ButtonL1_released_0()
+{
   IntakeA.stop();
   IntakeB.stop();
   IntakeC.stop();
 }
 
-void onevent_Controller1ButtonL2_released_0() {
+void onevent_Controller1ButtonL2_released_0()
+{
   IntakeA.stop();
   IntakeB.stop();
   IntakeC.stop();
 }
 
-void onevent_Controller1ButtonR1_released_0() {
+void onevent_Controller1ButtonR1_released_0()
+{
   IntakeA.stop();
   IntakeB.stop();
   IntakeC.stop();
 }
 
-void onevent_Controller1ButtonR2_released_0() {
+void onevent_Controller1ButtonR2_released_0()
+{
   IntakeA.stop();
   IntakeB.stop();
   IntakeC.stop();
 }
 
-void onevent_Controller1ButtonRight_released_0() {
+void onevent_Controller1ButtonRight_released_0()
+{
   IntakeA.stop();
   IntakeB.stop();
   IntakeC.stop();
 }
 
-void onevent_Controller1ButtonDown_released_0() {
+void onevent_Controller1ButtonDown_released_0()
+{
   IntakeA.stop();
   IntakeB.stop();
   IntakeC.stop();
 }
 
-//This is the wait, and shows how long something needs to happen before another action
-void waitUntilOrTimeout(double t, double timeout = 30, bool greater = false) {
-  // @TODO need to pass a condition 
+// This is the wait, and shows how long something needs to happen before another action
+void waitUntilOrTimeout(double t, double timeout = 30, bool greater = false)
+{
+  // @TODO need to pass a condition
   double start = Brain.Timer.value();
   printf("start move\n");
 
-  if (greater) {
-    while (leftMotorA.position(turns) <= t && Brain.Timer.value() - start < timeout) {
+  if (greater)
+  {
+    while (leftMotorA.position(turns) <= t && Brain.Timer.value() - start < timeout)
+    {
       wait(5, msec);
-      //leftMotorA.position());
+      // leftMotorA.position());
     }
-  } else {
-    while (leftMotorA.position(turns) >= t && Brain.Timer.value() - start < timeout) {
+  }
+  else
+  {
+    while (leftMotorA.position(turns) >= t && Brain.Timer.value() - start < timeout)
+    {
       wait(5, msec);
     }
   }
-
 }
 
-//This is the function for move, so in the code I can tell it to move a certain amount, and it does
-void move(int distance, int speed = 40, int timeout = 5) {
+// This is the function for move, so in the code I can tell it to move a certain amount, and it does
+void move(int distance, int speed = 40, int timeout = 5)
+{
   LeftDrive.setVelocity(speed, percent);
   RightDrive.setVelocity(speed, percent);
   LeftDrive.setTimeout(timeout, seconds);
   RightDrive.setTimeout(timeout, seconds);
   leftMotorA.resetPosition();
-  //leftMotorA.setTimeout(3, seconds);
-  // calculate turns for distance
+  // leftMotorA.setTimeout(3, seconds);
+  //  calculate turns for distance
   double t = distance / (3.25 * M_PI) * 0.75;
   printf("start move\n");
-  if (distance < 0) {
+  if (distance < 0)
+  {
     LeftDrive.spin(reverse);
     RightDrive.spin(reverse);
     // This should be a wait with a time limit to move on:
     waitUntil(leftMotorA.position(turns) <= t);
-    //waitUntilOrTimeout(t, 3000, true);
-    
-  } else {
+    // waitUntilOrTimeout(t, 3000, true);
+  }
+  else
+  {
     LeftDrive.spin(forward);
     RightDrive.spin(forward);
     // This should be a wait with a time limit to move on:
     waitUntil(leftMotorA.position(turns) >= t);
-    //waitUntilOrTimeout(t, 3000, false);
+    // waitUntilOrTimeout(t, 3000, false);
   }
   LeftDrive.stop(brake);
   RightDrive.stop(brake);
   printf("end move\n");
 }
 
-//This is the function for turn, so that I type in turn then the amount of degrees I need
-void turn(int angle, int speed = 20, double timeout = 3) {
+// This is the function for turn, so that I type in turn then the amount of degrees I need
+void turn(int angle, int speed = 20, double timeout = 3)
+{
   {
-  IMU1.resetRotation();
-  double start = Brain.Timer.value();
-  printf("start turn\n");
-  while (fabs(IMU1.rotation(degrees)) < fabs(angle) && Brain.Timer.value() - start < timeout) {
-    if (angle < 0) {
-      // turn counterclockwise
-      LeftDrive.spin(reverse, speed, percent);
-      RightDrive.spin(forward, speed, percent);
-    } else {
-      // turn clockwise
-      LeftDrive.spin(forward, speed, percent);
-      RightDrive.spin(reverse, speed, percent);
+    IMU1.resetRotation();
+    double start = Brain.Timer.value();
+    printf("start turn\n");
+    while (fabs(IMU1.rotation(degrees)) < fabs(angle) && Brain.Timer.value() - start < timeout)
+    {
+      if (angle < 0)
+      {
+        // turn counterclockwise
+        LeftDrive.spin(reverse, speed, percent);
+        RightDrive.spin(forward, speed, percent);
+      }
+      else
+      {
+        // turn clockwise
+        LeftDrive.spin(forward, speed, percent);
+        RightDrive.spin(reverse, speed, percent);
+      }
     }
+    LeftDrive.stop(brake);
+    RightDrive.stop(brake);
+    printf("end turn\n");
   }
-  LeftDrive.stop(brake);
-  RightDrive.stop(brake);
-  printf("end turn\n");
-} 
 }
 
-//Lines 172-193 define what a block is for the color sensor
-enum block {
+// Lines 172-193 define what a block is for the color sensor
+enum block
+{
   NONE,
   RED,
   BLUE
@@ -200,14 +226,20 @@ enum block {
 
 block Block = block::NONE;
 
-void blockDetect() {
-  while (true) {
+void blockDetect()
+{
+  while (true)
+  {
     Block = block::NONE;
-    if (Eyes.isNearObject()) {
+    if (Eyes.isNearObject())
+    {
       color c = Eyes.color();
-      if (c == color::red) {
+      if (c == color::red)
+      {
         Block = block::RED;
-      } else if (c == color::blue) {
+      }
+      else if (c == color::blue)
+      {
         Block = block::BLUE;
       }
     }
@@ -215,12 +247,14 @@ void blockDetect() {
   }
 }
 
-//This is for the menu, so the menu loads before the autonomous
-void auton() {
+// This is for the menu, so the menu loads before the autonomous
+void auton()
+{
   Menu.currentAuton();
 }
 
-void autonomous1(void) {
+void autonomous1(void)
+{
   // This is the code for our autonomous in the left corner of the blue alliance
   // It already has the matchload, and spins to score in the middle top goal
   IntakeA.spin(forward);
@@ -232,11 +266,11 @@ void autonomous1(void) {
   move(6, 10);
   // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(6, 10); //5 -> 6
+  move(6, 10); // 5 -> 6
   // It turns to face the middle top goal
   turn(-87.5);
   // It moves backward to the middle top goal, and scores the blocks
-  move(-34, 15); 
+  move(-34, 15);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
   wait(1.5, sec);
@@ -264,10 +298,11 @@ void autonomous1(void) {
   move(-49);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
-  //IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
+  // IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
 }
 
-void autonomous2(void) {
+void autonomous2(void)
+{
   // This is the code for our autonomous in the right corner of the blue alliance
   // It already has the matchload, and spins to score in the top goal
   IntakeA.spin(forward);
@@ -288,7 +323,7 @@ void autonomous2(void) {
   move(24, 15);
   // It reverse the intake direction to outtake the blocks into the goal
   IntakeA.spin(reverse, 70, percent);
-  IntakeB.spin(forward, 70, percent); 
+  IntakeB.spin(forward, 70, percent);
   wait(1.75, sec);
   // It moves backward to between the matchloading part and the long goal
   move(-86);
@@ -319,7 +354,8 @@ void autonomous2(void) {
   StopperToggle();
 }
 
-void autonomous3(void) {
+void autonomous3(void)
+{
   // This is the code for our autonomous in the right corner of the red alliance
   // It already has the matchload, and spins to score in the middle top goal
   IntakeA.spin(forward);
@@ -335,7 +371,7 @@ void autonomous3(void) {
   // It turns to face the middle top goal
   turn(-88.5);
   // It moves backward to the middle top goal, and scores the blocks
-  move(-34, 15); 
+  move(-34, 15);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
   wait(1.5, sec);
@@ -365,7 +401,8 @@ void autonomous3(void) {
   StopperToggle();
 }
 
-void autonomous4(void) {
+void autonomous4(void)
+{
   // This is the code for our autonomous in the left corner of the red alliance
   // It already has the matchload, and spins to score in the top goal
   IntakeA.spin(forward);
@@ -386,7 +423,7 @@ void autonomous4(void) {
   move(24, 15);
   // It reverse the intake direction to outtake the blocks into the goal
   IntakeA.spin(reverse, 70, percent);
-  IntakeB.spin(forward, 70, percent); 
+  IntakeB.spin(forward, 70, percent);
   wait(1.75, sec);
   // It moves backward to between the matchloading part and the long goal
   move(-86);
@@ -417,7 +454,8 @@ void autonomous4(void) {
   StopperToggle();
 }
 
-void autonomous5(void) {
+void autonomous5(void)
+{
   // This is the code for our skills autonomous
   // It already has the matchload, and spins to score in the middle top goal
   // IntakeA.spin(forward);
@@ -433,7 +471,7 @@ void autonomous5(void) {
   // // It turns to face the middle top goal
   // turn(-88.5);
   // // It moves backward to the middle top goal, and scores the blocks
-  // move(-34, 15); 
+  // move(-34, 15);
   // // The Stopper releases so the blocks can fall into the goal
   // StopperToggle();
   // wait(1.5, sec);
@@ -470,9 +508,10 @@ void autonomous5(void) {
   move(50, 100);
 }
 
-//This is for the menu, so we can register which autonomous to choose before a match begins
-//It also shows on the screen which autonomous we want to select in easier terms to understand
-void pre_auton(void) {
+// This is for the menu, so we can register which autonomous to choose before a match begins
+// It also shows on the screen which autonomous we want to select in easier terms to understand
+void pre_auton(void)
+{
   waitUntil(IMU1.isCalibrating() == true);
   Menu.registerAuton("Blue Side, Left Corner", autonomous1);
   Menu.registerAuton("Blue Side, Right Corner", autonomous2);
@@ -481,21 +520,28 @@ void pre_auton(void) {
   Menu.registerAuton("Skills", autonomous5);
 }
 
-//This is the controls that define which button presses do which functions
-void usercontrol(void) {
-  while (!Menu.isComplete) {
+// This is the controls that define which button presses do which functions
+void usercontrol(void)
+{
+  while (!Menu.isComplete)
+  {
     wait(20, msec);
   }
-  if (Menu.autonMode) {
+  if (Menu.autonMode)
+  {
     Menu.currentAuton();
     return;
   }
-  while (1) {
-    if (Controller1.ButtonL2.pressing()) {
+  while (1)
+  {
+    if (Controller1.ButtonL2.pressing())
+    {
       IntakeA.spin(reverse);
       IntakeB.spin(forward);
       IntakeC.spin(forward, 100, percent);
-    } else if (Controller1.ButtonL1.pressing()) {
+    }
+    else if (Controller1.ButtonL1.pressing())
+    {
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
       IntakeC.spin(reverse, 100, percent);
@@ -508,12 +554,14 @@ void usercontrol(void) {
       //   printf("slow.\n");
       // }
     }
-    if (Controller1.ButtonR1.pressing()) {
+    if (Controller1.ButtonR1.pressing())
+    {
       IntakeA.spin(forward);
       IntakeB.spin(reverse);
       IntakeC.spin(forward, 70, percent);
-    } else if (Controller1.ButtonR2.pressing()) {
-
+    }
+    else if (Controller1.ButtonR2.pressing())
+    {
     }
     // if (Controller1.ButtonDown.pressing()) {
 
@@ -547,12 +595,14 @@ void usercontrol(void) {
     // calculate the drivetrain motor velocities from the controller joystick axies
     // left = Axis3 + Axis1;
     // right = Axis3 - Axis1;
-    //NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning, number is percent of turn speed
+    // NOTE TO SELF IMPORTANT, the plus and minus signs are the side of turning, number is percent of turn speed
     int speedLeft = Controller1.Axis3.position() + Controller1.Axis1.position() * 0.4;
     int speedRight = Controller1.Axis3.position() - Controller1.Axis1.position() * 0.4;
     // check if the value is inside of the deadband range
-    if (abs(speedLeft) < 3) speedLeft = 0;
-    if (abs(speedRight) < 3) speedRight = 0;
+    if (abs(speedLeft) < 3)
+      speedLeft = 0;
+    if (abs(speedRight) < 3)
+      speedRight = 0;
     LeftDrive.spin(forward, speedLeft, percent);
     RightDrive.spin(forward, speedRight, percent);
     wait(20, msec);
@@ -576,12 +626,13 @@ void usercontrol(void) {
 //   }
 // }
 
-int main() {
+int main()
+{
   Competition.autonomous(auton);
   Competition.drivercontrol(usercontrol);
   pre_auton();
 
-//These register either the single button presses for pneumatics, or releasing buttons for other motors
+  // These register either the single button presses for pneumatics, or releasing buttons for other motors
   Controller1.ButtonL1.released(onevent_Controller1ButtonL1_released_0);
   Controller1.ButtonL2.released(onevent_Controller1ButtonL2_released_0);
   Controller1.ButtonR1.released(onevent_Controller1ButtonR1_released_0);
@@ -592,7 +643,7 @@ int main() {
 
   // Controller1.ButtonA.pressed(setBlock);
 
-  //These set the speeds of the motors, and the settings of the color sensor
+  // These set the speeds of the motors, and the settings of the color sensor
   IntakeA.setVelocity(100, percent);
   IntakeB.setVelocity(100, percent);
   IntakeC.setVelocity(100, percent);
@@ -607,7 +658,8 @@ int main() {
   Eyes.objectDetectThreshold(150);
   thread block(blockDetect);
 
-  while (true) {
+  while (true)
+  {
     wait(100, msec);
   }
 }
