@@ -257,45 +257,38 @@ void autonomous1(void)
 {
   // This is the code for our autonomous in the left corner of the blue alliance
   // It already has the matchload, and spins to score in the middle top goal
-  IntakeA.spin(forward);
-  IntakeB.spin(reverse);
-  IntakeC.spin(forward, 70, percent);
+  IntakeA.spin(forward, 60, percent);
+  IntakeB.spin(reverse, 60, percent);
+  IntakeC.spin(forward, 60, percent);
   // It moves toward the three blocks, and intakes them
-  move(30, 15);
+  move(29.25);
   wait(.25, sec);
-  move(6, 10);
   // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(6, 10); // 5 -> 6
+  move(5.75); 
   // It turns to face the middle top goal
-  turn(-87.5);
+  turn(-92);
   // It moves backward to the middle top goal, and scores the blocks
-  move(-34, 15);
+  move(-26, 15);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
   wait(1.5, sec);
   // The intake now spins in the direction to score in the long goal
-  move(83);
+  move(76);
   // The Stopper comes back so the blocks do not fall out
   IntakeC.spin(reverse, 100, percent);
   // It moves to the area between the matchloading part and the long goal
   StopperToggle();
   // It turns to face the matchloading part
-  turn(-25);
-  wait(.75, sec);
-  // It moves backwards to the long goal
-  move(-31, 20);
-  wait(0.25, sec);
-  move(10, 20);
-  wait(0.25, sec);
-  move(-10, 20);
-  wait(0.5, sec);
+
+  turn(-20);
   // It moves to the matchloading part, and takes out three more blocks
-  move(38, 20);
-  move(10, 10);
+  move(23, 15);
   wait(1, sec);
   // It moves backwards to the long goal
-  move(-49);
+  move(-10);
+  turn(-0.35);
+  move(-36);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
   // IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
@@ -309,215 +302,73 @@ void autonomous2(void)
   IntakeB.spin(reverse);
   IntakeC.spin(reverse);
   // It moves toward the three blocks, and intakes them
-  move(30, 15);
+  move(28.5); //29
   wait(.25, sec);
-  move(6, 10);
   // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(3, 10);
+  move(5); 
   // It turns to face the middle bottom goal
   turn(-44);
   // The scraper lifts up to be ready to score
   ScraperToggle();
-  // It moves backward to the middle bottom goal, and scores the blocks
-  move(24, 15);
-  // It reverse the intake direction to outtake the blocks into the goal
+  // It moves forward to the middle bottom goal, and scores the blocks
+  move(23, 15); 
+  // It reverses the intake direction to outtake the blocks into the goal
   IntakeA.spin(reverse, 70, percent);
   IntakeB.spin(forward, 70, percent);
-  wait(1.75, sec);
+  wait(1, sec);
+  IntakeA.stop();
+  IntakeB.stop();
+  wait(0.25, sec);
+  IntakeA.spin(reverse, 70, percent);
+  IntakeB.spin(forward, 70, percent);
+  wait(1, sec);
   // It moves backward to between the matchloading part and the long goal
-  move(-86);
-  // The intake now spins in the direction to score in the long goal
-  IntakeA.spin(forward, 100, percent);
-  IntakeB.spin(reverse, 100, percent);
-  // // It moves to the area between the matchloading part and the long goal
-  // // It turns to face the matchloading part
-  turn(-120);
-  wait(.75, sec);
-  // It moves backwards to the long goal
-  move(-48, 20);
-  wait(0.25, sec);
-  move(10, 20);
-  wait(0.25, sec);
-  move(-10, 20);
-  wait(0.5, sec);
-  // It moves to the matchloading part
-  move(36, 20);
-  // It lowers the scraper to intake three blocks
+  IntakeA.spin(forward);
+  IntakeB.spin(reverse);
+  move(-79);
   ScraperToggle();
-  wait(0.8, sec);
-  move(10, 10);
-  wait(0.6, sec);
+  turn(-114);
+  move(14.5, 15);
+  wait(0.5, sec);
   // It moves backwards to the long goal
-  move(-48, 20);
+  move(-23);
+  move(-42);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
 }
 
 void autonomous3(void)
 {
-  // This is the code for our autonomous in the right corner of the red alliance
-  // It already has the matchload, and spins to score in the middle top goal
-  IntakeA.spin(forward);
-  IntakeB.spin(reverse);
-  IntakeC.spin(forward, 70, percent);
-  // It moves toward the three blocks, and intakes them
-  move(30, 15);
-  wait(.25, sec);
-  move(6, 10);
-  // The scraper comes down to get the third block in the intake
-  ScraperToggle();
-  move(5, 10);
-  // It turns to face the middle top goal
-  turn(-88.5);
-  // It moves backward to the middle top goal, and scores the blocks
-  move(-34, 15);
-  // The Stopper releases so the blocks can fall into the goal
-  StopperToggle();
-  wait(1.5, sec);
-  // The intake now spins in the direction to score in the long goal
-  move(83);
-  // The Stopper comes back so the blocks do not fall out
-  IntakeC.spin(reverse, 100, percent);
-  // It moves to the area between the matchloading part and the long goal
-  StopperToggle();
-  // It turns to face the matchloading part
-  turn(-25);
-  wait(.75, sec);
-  // It moves backwards to the long goal
-  move(-31, 20);
-  wait(0.25, sec);
-  move(10, 20);
-  wait(0.25, sec);
-  move(-10, 20);
-  wait(0.5, sec);
-  // It moves to the matchloading part, and takes out three more blocks
-  move(38, 20);
-  move(10, 10);
-  wait(1, sec);
-  // It moves backwards to the long goal
-  move(-49);
-  // The Stopper releases so the blocks can fall into the goal
-  StopperToggle();
-}
-
-void autonomous4(void)
-{
-  // This is the code for our autonomous in the left corner of the red alliance
-  // It already has the matchload, and spins to score in the top goal
+  // This is the code for our skills autonomous
   IntakeA.spin(forward);
   IntakeB.spin(reverse);
   IntakeC.spin(reverse);
-  // It moves toward the three blocks, and intakes them
-  move(30, 15);
-  wait(.25, sec);
-  move(6, 10);
-  // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(3, 10);
-  // It turns to face the middle bottom goal
-  turn(-44);
-  // The scraper lifts up to be ready to score
+  move(48);
+  turn(69);
+  move(17, 15);
+  wait(1.4, sec);
+  move(-46);
+  StopperToggle();
+  wait(2, sec);
+  move(5);
   ScraperToggle();
-  // It moves backward to the middle bottom goal, and scores the blocks
-  move(24, 15);
-  // It reverse the intake direction to outtake the blocks into the goal
-  IntakeA.spin(reverse, 70, percent);
-  IntakeB.spin(forward, 70, percent);
-  wait(1.75, sec);
-  // It moves backward to between the matchloading part and the long goal
-  move(-86);
-  // The intake now spins in the direction to score in the long goal
-  IntakeA.spin(forward, 100, percent);
-  IntakeB.spin(reverse, 100, percent);
-  // // It moves to the area between the matchloading part and the long goal
-  // // It turns to face the matchloading part
-  turn(-120);
-  wait(.75, sec);
-  // It moves backwards to the long goal
-  move(-48, 20);
-  wait(0.25, sec);
-  move(10, 20);
-  wait(0.25, sec);
-  move(-10, 20);
-  wait(0.5, sec);
-  // It moves to the matchloading part
-  move(36, 20);
-  // It lowers the scraper to intake three blocks
-  ScraperToggle();
-  wait(0.8, sec);
-  move(10, 10);
-  wait(0.6, sec);
-  // It moves backwards to the long goal
-  move(-48, 20);
-  // The Stopper releases so the blocks can fall into the goal
+  turn(69);
+  move(45);
+  turn(78);
   StopperToggle();
 }
 
-void autonomous5(void)
-{
-  // This is the code for our skills autonomous
-  // It already has the matchload, and spins to score in the middle top goal
-  // IntakeA.spin(forward);
-  // IntakeB.spin(reverse);
-  // IntakeC.spin(forward, 70, percent);
-  // // It moves toward the three blocks, and intakes them
-  // move(30, 15);
-  // wait(.25, sec);
-  // move(6, 10);
-  // // The scraper comes down to get the third block in the intake
-  // ScraperToggle();
-  // move(5, 10);
-  // // It turns to face the middle top goal
-  // turn(-88.5);
-  // // It moves backward to the middle top goal, and scores the blocks
-  // move(-34, 15);
-  // // The Stopper releases so the blocks can fall into the goal
-  // StopperToggle();
-  // wait(1.5, sec);
-  // // The intake now spins in the direction to score in the long goal
-  // move(83);
-  // // The Stopper comes back so the blocks do not fall out
-  // IntakeC.spin(reverse, 100, percent);
-  // // It moves to the area between the matchloading part and the long goal
-  // StopperToggle();
-  // // It turns to face the matchloading part
-  // turn(-25);
-  // wait(.75, sec);
-  // // It moves backwards to the long goal
-  // move(-31);
-  // // It moves to the matchloading part, and takes out three more blocks
-  // move(36);
-  // move(10, 10);
-  // wait(3, sec);
-  // // It moves backwards to the long goal
-  // move(-47);
-  // // The Stopper releases so the blocks can fall into the goal
-  // StopperToggle();
-  // wait(5, sec);
-  // ScraperToggle();
-  // move(30);
-  // turn(-25);
-  // move(20);
-  // turn(-20);
-  // move(50);
-
-  move(-20);
-  ScraperToggle();
-  wait(0.5, sec);
-  move(50, 100);
-}
 
 // This is for the menu, so we can register which autonomous to choose before a match begins
 // It also shows on the screen which autonomous we want to select in easier terms to understand
 void pre_auton(void)
 {
   waitUntil(IMU1.isCalibrating() == true);
-  Menu.registerAuton("Blue Side, Left Corner", autonomous1);
-  Menu.registerAuton("Blue Side, Right Corner", autonomous2);
-  Menu.registerAuton("Red Side, Left Corner", autonomous3);
-  Menu.registerAuton("Red Side, Right Corner", autonomous4);
-  Menu.registerAuton("Skills", autonomous5);
+  Menu.registerAuton("Left Corner", autonomous1);
+  Menu.registerAuton("Right Corner", autonomous2);
+  Menu.registerAuton("Skills", autonomous3);
 }
 
 // This is the controls that define which button presses do which functions
@@ -536,14 +387,14 @@ void usercontrol(void)
   {
     if (Controller1.ButtonL2.pressing())
     {
-      IntakeA.spin(reverse);
-      IntakeB.spin(forward);
+      IntakeA.spin(reverse, 100, percent);
+      IntakeB.spin(forward, 100, percent);
       IntakeC.spin(forward, 100, percent);
     }
     else if (Controller1.ButtonL1.pressing())
     {
-      IntakeA.spin(forward);
-      IntakeB.spin(reverse);
+      IntakeA.spin(forward, 100, percent);
+      IntakeB.spin(reverse, 100, percent);
       IntakeC.spin(reverse, 100, percent);
       // if ((Block == block::BLUE && (Menu.currentAuton == &autonomous3 || Menu.currentAuton == &autonomous4))
       //   || (Block == block::RED && (Menu.currentAuton == &autonomous1 || Menu.currentAuton == &autonomous2))) {
@@ -556,9 +407,9 @@ void usercontrol(void)
     }
     if (Controller1.ButtonR1.pressing())
     {
-      IntakeA.spin(forward);
-      IntakeB.spin(reverse);
-      IntakeC.spin(forward, 70, percent);
+      IntakeA.spin(forward, 60, percent);
+      IntakeB.spin(reverse, 60, percent);
+      IntakeC.spin(forward, 60, percent);
     }
     else if (Controller1.ButtonR2.pressing())
     {
@@ -647,9 +498,9 @@ int main()
   IntakeA.setVelocity(100, percent);
   IntakeB.setVelocity(100, percent);
   IntakeC.setVelocity(100, percent);
-  leftMotorA.setVelocity(98, percent);
-  leftMotorB.setVelocity(98, percent);
-  leftMotorC.setVelocity(98, percent);
+  leftMotorA.setVelocity(96, percent); //96
+  leftMotorB.setVelocity(96, percent); //96
+  leftMotorC.setVelocity(96, percent); //96
   rightMotorA.setVelocity(100, percent);
   rightMotorB.setVelocity(100, percent);
   rightMotorC.setVelocity(100, percent);
