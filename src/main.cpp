@@ -265,29 +265,29 @@ void autonomous1(void)
   wait(.25, sec);
   // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(5.75); 
+  move(6.25); 
   // It turns to face the middle top goal
   turn(-92);
   // It moves backward to the middle top goal, and scores the blocks
-  move(-26.3, 15);
+  move(-27.1, 15);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
   wait(1.75, sec);
   // The intake now spins in the direction to score in the long goal
-  move(76.1);
+  move(76.3);
   // The Stopper comes back so the blocks do not fall out
   IntakeC.spin(reverse, 100, percent);
   // It moves to the area between the matchloading part and the long goal
   StopperToggle();
   // It turns to face the matchloading part
-  turn(-18);
+  turn(-17.3);
   // It moves to the matchloading part, and takes out three more blocks
-  move(21, 15);
+  move(20.6, 15);
   wait(1, sec);
   // It moves backwards to the long goal
-  move(-46);
-  //turn(-0.35);
-  //move(-36);
+  move(-10);
+  turn(-0.35);
+  move(-36);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
   // IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
@@ -305,9 +305,9 @@ void autonomous2(void)
   wait(.25, sec);
   // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(5); 
+  move(4.2); 
   // It turns to face the middle bottom goal
-  turn(-44);
+  turn(-42);
   // The scraper lifts up to be ready to score
   ScraperToggle();
   // It moves forward to the middle bottom goal, and scores the blocks
@@ -318,7 +318,7 @@ void autonomous2(void)
   wait(1, sec);
   IntakeA.stop();
   IntakeB.stop();
-  wait(0.25, sec);
+  wait(0.15, sec);
   IntakeA.spin(reverse, 70, percent);
   IntakeB.spin(forward, 70, percent);
   wait(1, sec);
@@ -328,10 +328,12 @@ void autonomous2(void)
   move(-77.5);
   ScraperToggle();
   turn(-113);
-  move(15, 15);
-  wait(0.5, sec);
+  move(15.6, 15);
+  wait(0.6, sec);
   // It moves backwards to the long goal
-  move(-46);
+  move(-16);
+  turn(0.25);
+  move(-30);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
 }
