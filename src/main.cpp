@@ -49,7 +49,7 @@ digital_out Descore = digital_out(Brain.ThreeWirePort.G);
 // This helps with autonomous, as it registers turning to be more realistic
 inertial IMU1 = inertial(PORT19);
 // This is a color sensor, to help detect different colored blocks
-optical Eyes = optical(PORT3);
+optical Eyes = optical(PORT13);
 
 // These are booleans to help with programming
 bool toggleStopper = false;
