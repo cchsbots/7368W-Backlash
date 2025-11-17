@@ -265,7 +265,7 @@ void autonomous1(void)
   wait(.25, sec);
   // The scraper comes down to get the third block in the intake
   ScraperToggle();
-  move(6.25); 
+  move(6.3); 
   // It turns to face the middle top goal
   turn(-92);
   // It moves backward to the middle top goal, and scores the blocks
@@ -282,14 +282,18 @@ void autonomous1(void)
   // It turns to face the matchloading part
   turn(-17.3);
   // It moves to the matchloading part, and takes out three more blocks
-  move(20.6, 15);
+  move(20.8, 15);
   wait(1, sec);
   // It moves backwards to the long goal
   move(-10);
-  turn(-0.35);
+  //turn(-0.35);
   move(-36);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
+  if (Block == block::RED)
+  {
+    StopperToggle();
+  }
   // IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
 }
 
@@ -316,9 +320,90 @@ void autonomous2(void)
   IntakeA.spin(reverse, 70, percent);
   IntakeB.spin(forward, 70, percent);
   wait(1, sec);
-  IntakeA.stop();
-  IntakeB.stop();
-  wait(0.15, sec);
+  // It moves backward to between the matchloading part and the long goal
+  IntakeA.spin(forward, 100, percent);
+  IntakeB.spin(reverse, 100, percent);
+  move(-77.5);
+  ScraperToggle();
+  turn(-115);
+  move(15.8, 20);
+  wait(0.8, sec);
+  // It moves backwards to the long goal
+  move(-16);
+  turn(0.2);
+  move(-30);
+  // The Stopper releases so the blocks can fall into the goal
+  StopperToggle();
+  if (Block == block::RED)
+  {
+    StopperToggle();
+  }
+}
+
+void autonomous3(void)
+{
+  // This is the code for our autonomous in the left corner of the blue alliance
+  // It already has the matchload, and spins to score in the middle top goal
+  IntakeA.spin(forward, 70, percent);
+  IntakeB.spin(reverse, 70, percent);
+  IntakeC.spin(forward, 60, percent);
+  // It moves toward the three blocks, and intakes them
+  move(29.25);
+  wait(.25, sec);
+  // The scraper comes down to get the third block in the intake
+  ScraperToggle();
+  move(6.3); 
+  // It turns to face the middle top goal
+  turn(-92);
+  // It moves backward to the middle top goal, and scores the blocks
+  move(-27.1, 15);
+  // The Stopper releases so the blocks can fall into the goal
+  StopperToggle();
+  wait(1.75, sec);
+  // The intake now spins in the direction to score in the long goal
+  move(76.3);
+  // The Stopper comes back so the blocks do not fall out
+  IntakeC.spin(reverse, 100, percent);
+  // It moves to the area between the matchloading part and the long goal
+  StopperToggle();
+  // It turns to face the matchloading part
+  turn(-17.3);
+  // It moves to the matchloading part, and takes out three more blocks
+  move(20.8, 15);
+  wait(1, sec);
+  // It moves backwards to the long goal
+  move(-10);
+  //turn(-0.35);
+  move(-36);
+  // The Stopper releases so the blocks can fall into the goal
+  StopperToggle();
+  if (Block == block::BLUE)
+  {
+    StopperToggle();
+  }
+  // IMPORTANT, NEGATIVE TURNS ARE LEFT, POSITIVE TURNS ARE RIGHT
+}
+
+void autonomous4(void)
+{
+  // This is the code for our autonomous in the right corner of the blue alliance
+  // It already has the matchload, and spins to score in the top goal
+  IntakeA.spin(forward);
+  IntakeB.spin(reverse);
+  IntakeC.spin(reverse);
+  // It moves toward the three blocks, and intakes them
+  move(28.5); //29
+  wait(.25, sec);
+  // The scraper comes down to get the third block in the intake
+  ScraperToggle();
+  move(4.2); 
+  // It turns to face the middle bottom goal
+  turn(-42);
+  // The scraper lifts up to be ready to score
+  ScraperToggle();
+  // It moves forward to the middle bottom goal, and scores the blocks
+  move(23, 15); 
+  // It reverses the intake direction to outtake the blocks into the goal
   IntakeA.spin(reverse, 70, percent);
   IntakeB.spin(forward, 70, percent);
   wait(1, sec);
@@ -327,18 +412,22 @@ void autonomous2(void)
   IntakeB.spin(reverse, 100, percent);
   move(-77.5);
   ScraperToggle();
-  turn(-113);
-  move(15.6, 15);
-  wait(0.6, sec);
+  turn(-115);
+  move(15.8, 20);
+  wait(0.8, sec);
   // It moves backwards to the long goal
   move(-16);
-  turn(0.25);
+  turn(0.2);
   move(-30);
   // The Stopper releases so the blocks can fall into the goal
   StopperToggle();
+  if (Block == block::BLUE)
+  {
+    StopperToggle();
+  }
 }
 
-void autonomous3(void)
+void autonomous5(void)
 {
   // This is the code for our skills autonomous
   IntakeA.spin(forward);
@@ -366,9 +455,11 @@ void autonomous3(void)
 void pre_auton(void)
 {
   waitUntil(IMU1.isCalibrating() == true);
-  Menu.registerAuton("Left Corner", autonomous1);
-  Menu.registerAuton("Right Corner", autonomous2);
-  Menu.registerAuton("Skills", autonomous3);
+  Menu.registerAuton("Blue Left Corner", autonomous1);
+  Menu.registerAuton("Blue Right Corner", autonomous2);
+  Menu.registerAuton("Red Left Corner", autonomous3);
+  Menu.registerAuton("Red Right Corner", autonomous4);
+  Menu.registerAuton("Skills", autonomous5);
 }
 
 // This is the controls that define which button presses do which functions
